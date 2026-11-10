@@ -1,49 +1,265 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b1220">
 <title>NESLA CONNECT</title>
 <style>
-:root{--bg:#0b1220;--panel:#111c2e;--panel2:#17243a;--line:#263650;--text:#f4f7fc;--muted:#9aabc4;--blue:#6ea8ff;--cyan:#63d5df}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0b1220,#101d32);color:var(--text);font:15px/1.45 Inter,system-ui,Arial,sans-serif}
-header{position:sticky;top:0;z-index:3;background:#0b1220ed;backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.top{max-width:1050px;margin:auto;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{font-weight:900;letter-spacing:1.2px;font-size:19px}.brand span{color:var(--cyan)}.tag{font-size:10px;color:var(--muted);letter-spacing:2px}
-button{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(120deg,#3978dc,#4aabd1);color:white;font-weight:700;cursor:pointer}
-.wrap{max-width:1050px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:220px minmax(0,1fr) 220px;gap:18px}
-.card{background:linear-gradient(160deg,#142239,#101a2b);border:1px solid var(--line);border-radius:18px;padding:16px}
-nav a{display:flex;gap:12px;padding:12px;border-radius:12px;color:var(--muted);text-decoration:none;margin:4px 0}nav a.active,nav a:hover{background:#20334f;color:white}
-h3{margin:0 0 12px;font-size:15px}.muted{color:var(--muted)}.profile{display:flex;align-items:center;gap:11px}.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#4f8ce8,#65d3d7);font-weight:900;color:#081322}.stories{display:flex;gap:12px;overflow:auto;padding:2px 0 15px}.story{text-align:center;min-width:62px;font-size:11px;color:var(--muted)}.ring{padding:3px;border:2px solid var(--cyan);border-radius:50%;width:52px;height:52px;margin:auto auto 5px;display:grid;place-items:center}.composer{display:flex;align-items:center;gap:10px}.composer input{min-width:0;flex:1;background:#0c1728;border:1px solid var(--line);border-radius:12px;padding:12px;color:white}
-.post{margin-top:14px;padding:0;overflow:hidden}.posthead{padding:15px;display:flex;align-items:center;justify-content:space-between}.postbody{padding:0 15px 14px}.art{height:225px;display:grid;place-items:center;background:radial-gradient(circle at 70% 25%,#5c9dc8,#20385b 35%,#101b30 75%);font-size:32px;font-weight:900;letter-spacing:4px}.art.alt{background:radial-gradient(circle at 25% 35%,#a77dd5,#34456e 38%,#101b30 78%)}.actions{display:flex;gap:16px;padding:12px 15px;color:var(--muted)}.actions button{background:none;color:var(--muted);padding:0;font-size:14px}.actions button.liked{color:#ff7595}.right p{font-size:13px;color:var(--muted)}.pill{display:inline-block;padding:5px 9px;border-radius:30px;background:#203550;color:#9edce7;font-size:11px}
-.bottom{display:none;position:fixed;bottom:0;left:0;right:0;background:#0b1220f5;border-top:1px solid var(--line);padding:10px 8px;justify-content:space-around;z-index:4}.bottom a{color:var(--muted);text-decoration:none;font-size:12px}
-@media(max-width:850px){.wrap{grid-template-columns:1fr;max-width:620px}.left,.right{display:none}.bottom{display:flex}.top{padding:13px 16px}.wrap{margin:16px auto 80px}.art{height:210px}}
+:root {
+--bg:#0b1220;--card:#142239;--text:#fff;
+--muted:#9aabc4;--blue:#3988ff;--line:#263650;
+}
+body.light {
+--bg:#f1f5fb;--card:#fff;--text:#18243a;
+--muted:#68768a;--line:#dce3ed;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+font-family:Arial,sans-serif;transition:.2s}
+header{padding:17px;background:var(--card);
+border-bottom:1px solid var(--line);
+display:flex;justify-content:space-between;align-items:center;
+position:sticky;top:0;z-index:5}
+.logo{font-size:22px;font-weight:900}
+.logo span{color:#63d5df}
+button{border:0;border-radius:10px;padding:11px;
+background:var(--blue);color:white;font-weight:bold;
+cursor:pointer;margin:3px}
+.wrap{max-width:850px;margin:18px auto;padding:0 12px}
+.card{background:var(--card);padding:15px;
+border:1px solid var(--line);border-radius:15px;margin-bottom:13px}
+nav{display:flex;gap:5px;overflow:auto;padding:8px 0}
+nav button{white-space:nowrap}
+.muted{color:var(--muted);font-size:13px}
+input{padding:12px;border-radius:10px;border:1px solid var(--line);
+background:var(--bg);color:var(--text);width:70%}
+.storyrow{display:flex;gap:15px;overflow:auto}
+.story{text-align:center;min-width:65px;font-size:12px}
+.ring{border:3px solid #63d5df;border-radius:50%;
+padding:4px;width:55px;height:55px;margin:auto auto 5px;
+display:grid;place-items:center;font-size:20px}
+.postart{height:190px;display:grid;place-items:center;
+background:linear-gradient(130deg,#24578d,#9a5bbd);
+font-size:28px;font-weight:bold;text-align:center}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.section{display:none}
+.section.active{display:block}
+.badge{color:#48a8ff}
+.message{padding:10px;background:var(--bg);
+border-radius:10px;margin:8px 0}
+.reel{height:260px;background:linear-gradient(150deg,#563b87,#176c91);
+display:grid;place-items:center;font-size:28px;font-weight:bold;
+border-radius:12px;text-align:center}
+textarea{width:100%;background:var(--bg);color:var(--text);
+border:1px solid var(--line);border-radius:10px;padding:12px}
+footer{text-align:center;color:var(--muted);padding:20px}
 </style>
 </head>
 <body>
-<header><div class="top"><div><div class="brand">NESLA <span>CONNECT</span></div><div class="tag">CONNECT · SHARE · DISCOVER</div></div><button onclick="alert('Demo: sign-up will be connected in the next version.')">Join now</button></div></header>
-<div class="wrap">
-<aside class="left">
- <div class="card"><div class="profile"><div class="avatar">N</div><div><b>Welcome!</b><div class="muted" style="font-size:12px">Your community awaits</div></div></div><hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
- <nav><a class="active" href="#">⌂ &nbsp; Home</a><a href="#">⌕ &nbsp; Explore</a><a href="#">▣ &nbsp; Reels</a><a href="#">✉ &nbsp; Messages</a><a href="#">♡ &nbsp; Notifications</a><a href="#">◉ &nbsp; Profile</a></nav></div>
-</aside>
-<main>
- <div class="card"><h3>Stories</h3><div class="stories">
- <div class="story"><div class="ring"><div class="avatar">+</div></div>Your story</div>
- <div class="story"><div class="ring"><div class="avatar">A</div></div>Aarav</div>
- <div class="story"><div class="ring"><div class="avatar">S</div></div>Siya</div>
- <div class="story"><div class="ring"><div class="avatar">R</div></div>Rohan</div>
- <div class="story"><div class="ring"><div class="avatar">M</div></div>Meera</div>
- </div></div>
- <div class="card" style="margin-top:14px"><div class="composer"><div class="avatar">N</div><input id="postText" placeholder="What's happening in your world?"><button onclick="addPost()">Post</button></div></div>
- <article class="card post"><div class="posthead"><div class="profile"><div class="avatar">A</div><div><b>Aarav Sharma</b><div class="muted" style="font-size:11px">2 hours ago · Jaipur</div></div></div><span class="muted">•••</span></div><div class="art">FIND YOUR<br>OWN WAY</div><div class="postbody"><b>Small steps. Big dreams. ✨</b><div class="muted" style="font-size:13px">Every day is a new chance to create something amazing.</div></div><div class="actions"><button onclick="like(this)">♡ Like</button><span>💬 Comment</span><span>↗ Share</span></div></article>
- <article class="card post"><div class="posthead"><div class="profile"><div class="avatar">S</div><div><b>Siya Patel</b><div class="muted" style="font-size:11px">5 hours ago</div></div></div><span class="muted">•••</span></div><div class="art alt">CREATE<br>· INSPIRE ·</div><div class="postbody"><b>Keep learning, keep growing. 🌱</b></div><div class="actions"><button onclick="like(this)">♡ Like</button><span>💬 Comment</span><span>↗ Share</span></div></article>
-</main>
-<aside class="right"><div class="card"><h3>About NESLA</h3><span class="pill">Preview version</span><p>A fresh place to connect with people, share moments and discover ideas.</p><hr style="border:0;border-top:1px solid var(--line)"><h3>Coming next</h3><p>✓ Profiles & follows</p><p>✓ Photo sharing</p><p>✓ Private messaging</p><p>✓ Reels & notifications</p></div></aside>
+<header>
+<div>
+<div class="logo">NESLA <span>CONNECT</span></div>
+<div class="muted">CONNECT · SHARE · DISCOVER</div>
 </div>
-<div class="bottom"><a href="#">⌂<br>Home</a><a href="#">⌕<br>Explore</a><a href="#">＋<br>Post</a><a href="#">♡<br>Activity</a><a href="#">◉<br>Profile</a></div>
+<button onclick="toggleTheme()">🌙 Theme</button>
+</header>
+
+<div class="wrap">
+<nav>
+<button onclick="show('home')">🏠 Home</button>
+<button onclick="show('reels')">🎬 Reels</button>
+<button onclick="show('chat')">💬 Chat</button>
+<button onclick="show('stories')">📸 Stories</button>
+<button onclick="show('group')">👥 Groups</button>
+<button onclick="show('ai')">🤖 AI</button>
+<button onclick="show('profile')">👤 Profile</button>
+</nav>
+
+<section id="home" class="section active">
+<div class="card">
+<h3>📸 Stories</h3>
+<div class="storyrow">
+<div class="story"><div class="ring">+</div>Your Story</div>
+<div class="story"><div class="ring">A</div>Aarav</div>
+<div class="story"><div class="ring">S</div>Siya</div>
+<div class="story"><div class="ring">R</div>Rohan</div>
+</div>
+<button onclick="addStory()">+ Add Story</button>
+</div>
+
+<div class="card">
+<h3>Create Post</h3>
+<textarea id="postText" placeholder="What's happening?"></textarea>
+<div class="actions">
+<button onclick="addPost()">📤 Publish</button>
+<button onclick="alert('Music selection will be connected later')">🎵 Music</button>
+</div>
+</div>
+<div id="posts"></div>
+
+<div class="card">
+<div><b>Aarav Sharma</b> <span class="badge">✔ Verified</span></div>
+<div class="postart">FIND YOUR OWN WAY ✨</div>
+<p>Small steps. Big dreams.</p>
+<div class="actions">
+<button onclick="like(this)">♡ Like</button>
+<button onclick="commentPost()">💬 Comment</button>
+<button onclick="alert('Demo share')">↗ Share</button>
+<button onclick="alert('Music feature demo')">🎵 Music</button>
+</div>
+</div>
+</section>
+
+<section id="stories" class="section">
+<div class="card">
+<h2>📸 Stories</h2>
+<p class="muted">Share your daily moments.</p>
+<button onclick="addStory()">+ Create Story</button>
+<div id="storyList"></div>
+</div>
+</section>
+
+<section id="reels" class="section">
+<div class="card">
+<h2>🎬 NESLA Reels</h2>
+<div class="reel">CREATE · INSPIRE · REPEAT</div>
+<p>Welcome to NESLA Reels!</p>
+<div class="actions">
+<button onclick="like(this)">♥ Like</button>
+<button onclick="commentPost()">💬 Comment</button>
+<button onclick="alert('Share demo')">↗ Share</button>
+</div>
+<p class="muted">Video upload and real video feed will be connected later.</p>
+</div>
+</section>
+
+<section id="chat" class="section">
+<div class="card">
+<h2>💬 Private Chat</h2>
+<div id="messages">
+<div class="message">Aarav: Hello! Welcome to NESLA.</div>
+</div>
+<input id="chatText" placeholder="Write a message...">
+<button onclick="sendMessage()">Send</button>
+<p class="muted">Demo chat: messages are stored only in this page.</p>
+<button onclick="alert('Voice calling needs a calling service')">📞 Voice Call</button>
+<button onclick="alert('Video calling needs a calling service')">📹 Video Call</button>
+</div>
+</section>
+
+<section id="group" class="section">
+<div class="card">
+<h2>👥 Group Chat</h2>
+<div id="groupMessages">
+<div class="message">NESLA Friends: Welcome everyone!</div>
+</div>
+<input id="groupText" placeholder="Message your group">
+<button onclick="sendGroup()">Send</button>
+<button onclick="alert('Group creation demo')">+ Create Group</button>
+</div>
+</section>
+
+<section id="ai" class="section">
+<div class="card">
+<h2>🤖 NESLA AI Assistant</h2>
+<p>Ask me something!</p>
+<input id="aiText" placeholder="Ask a question...">
+<button onclick="askAI()">Ask AI</button>
+<div id="aiAnswer" class="message">Your AI assistant is ready.</div>
+<p class="muted">This is a sample assistant, not a connected AI service yet.</p>
+</div>
+</section>
+
+<section id="profile" class="section">
+<div class="card">
+<h2>👤 My Profile</h2>
+<div class="postart" style="height:100px">N</div>
+<h3>Your Name <span class="badge">✔</span></h3>
+<p class="muted">NESLA CONNECT member</p>
+<p>Posts: 0 · Followers: 0 · Following: 0</p>
+<button onclick="alert('Profile editing demo')">Edit Profile</button>
+</div>
+</section>
+
+<footer>© 2026 NESLA CONNECT · All rights reserved</footer>
+</div>
+
 <script>
-function like(btn){let on=btn.classList.toggle('liked');btn.textContent=on?'♥ Liked':'♡ Like'}
-function addPost(){let input=document.getElementById('postText'),value=input.value.trim();if(!value){alert('Write something first!');return}let article=document.createElement('article');article.className='card post';article.innerHTML='<div class="posthead"><div class="profile"><div class="avatar">N</div><div><b>Your post</b><div class="muted" style="font-size:11px">Just now</div></div></div></div><div class="postbody" style="padding-top:8px"><b></b></div><div class="actions"><button onclick="like(this)">♡ Like</button><span>💬 Comment</span><span>↗ Share</span></div>';article.querySelector('.postbody b').textContent=value;document.querySelector('main').insertBefore(article,document.querySelector('main').children[2]);input.value=''}
+function show(id){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+window.scrollTo(0,0);
+}
+
+function toggleTheme(){
+document.body.classList.toggle('light');
+}
+
+function like(btn){
+let liked=btn.dataset.liked==='yes';
+btn.dataset.liked=liked?'no':'yes';
+btn.textContent=liked?'♡ Like':'♥ Liked';
+}
+
+function addPost(){
+let input=document.getElementById('postText');
+let value=input.value.trim();
+if(!value){alert('Write something first!');return;}
+let card=document.createElement('div');
+card.className='card';
+let title=document.createElement('b');
+title.textContent='Your post';
+let content=document.createElement('p');
+content.textContent=value;
+let btn=document.createElement('button');
+btn.textContent='♡ Like';
+btn.onclick=()=>like(btn);
+card.append(title,content,btn);
+document.getElementById('posts').prepend(card);
+input.value='';
+}
+
+function addStory(){
+let value=prompt('Write your story');
+if(!value)return;
+let item=document.createElement('div');
+item.className='message';
+item.textContent='Your Story: '+value;
+document.getElementById('storyList').prepend(item);
+}
+
+function sendMessage(){
+let input=document.getElementById('chatText');
+if(!input.value.trim())return;
+let msg=document.createElement('div');
+msg.className='message';
+msg.textContent='You: '+input.value;
+document.getElementById('messages').append(msg);
+input.value='';
+}
+
+function sendGroup(){
+let input=document.getElementById('groupText');
+if(!input.value.trim())return;
+let msg=document.createElement('div');
+msg.className='message';
+msg.textContent='You: '+input.value;
+document.getElementById('groupMessages').append(msg);
+input.value='';
+}
+
+function askAI(){
+let q=document.getElementById('aiText').value.trim();
+if(!q)return;
+document.getElementById('aiAnswer').textContent=
+'Demo AI: You asked "'+q+'". Real AI connection will be added in a future update.';
+}
+
+function commentPost(){
+let value=prompt('Write your comment');
+if(value)alert('Comment added in demo: '+value);
+}
 </script>
-</body></html>
+</body>
+</html>
