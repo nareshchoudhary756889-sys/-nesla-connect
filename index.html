@@ -261,5 +261,186 @@ let value=prompt('Write your comment');
 if(value)alert('Comment added in demo: '+value);
 }
 </script>
+
+<!-- NESLA CONNECT FIREBASE LOGIN -->
+<style>
+#neslaAuth {
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:#071426;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  color:white;
+  font-family:Arial,sans-serif;
+}
+#neslaAuth .auth-card {
+  width:100%;
+  max-width:380px;
+  background:#10243c;
+  border:1px solid #00d9ef;
+  border-radius:18px;
+  padding:25px;
+  text-align:center;
+}
+#neslaAuth h2 {color:#00e5ff;}
+#neslaAuth input {
+  box-sizing:border-box;
+  width:100%;
+  padding:13px;
+  margin:8px 0;
+  border:1px solid #36516b;
+  border-radius:9px;
+  background:#071426;
+  color:white;
+}
+#neslaAuth button {
+  width:100%;
+  padding:13px;
+  margin-top:10px;
+  border:0;
+  border-radius:9px;
+  background:#00d9ef;
+  color:#071426;
+  font-weight:bold;
+}
+#neslaAuth .switch {
+  background:transparent;
+  color:#00e5ff;
+  border:1px solid #00d9ef;
+}
+#neslaAuth p {font-size:14px;}
+#neslaLogout {
+  position:fixed;
+  z-index:99998;
+  top:12px;
+  right:12px;
+  background:#00d9ef;
+  color:#071426;
+  border:0;
+  border-radius:8px;
+  padding:9px 13px;
+  font-weight:bold;
+}
+</style>
+
+<div id="neslaAuth">
+  <div class="auth-card">
+    <h2>NESLA CONNECT</h2>
+    <p id="authHeading">Create your account</p>
+
+    <input id="authName" placeholder="Your name">
+    <input id="authEmail" type="email" placeholder="Email address">
+    <input id="authPassword" type="password"
+      placeholder="Password (minimum 6 characters)">
+
+    <button id="authSubmit" onclick="neslaSubmit()">
+      Sign Up
+    </button>
+
+    <button class="switch" id="authSwitch"
+      onclick="neslaToggle()">
+      Already have an account? Login
+    </button>
+
+    <p id="authMessage"></p>
+  </div>
+</div>
+
+<button id="neslaLogout" onclick="neslaLogoutUser()"
+  style="display:none">
+  Logout
+</button>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+const neslaFirebaseConfig = {
+  apiKey: "AIzaSyCWlwxPTsMkOM-qUrDiLu43gvrSh7Em5qc",
+  authDomain: "nesla-connect.firebaseapp.com",
+  projectId: "nesla-connect",
+  storageBucket: "nesla-connect.firebasestorage.app",
+  messagingSenderId: "304227833885",
+  appId: "1:304227833885:web:03854e0e5f1a6a701f8ef4",
+  measurementId: "G-6YCDJTZN7M"
+};
+
+firebase.initializeApp(neslaFirebaseConfig);
+const neslaAuth = firebase.auth();
+
+let neslaSignupMode = true;
+
+function neslaToggle() {
+  neslaSignupMode = !neslaSignupMode;
+
+  document.getElementById("authName").style.display =
+    neslaSignupMode ? "block" : "none";
+
+  document.getElementById("authHeading").textContent =
+    neslaSignupMode ? "Create your account" : "Welcome back";
+
+  document.getElementById("authSubmit").textContent =
+    neslaSignupMode ? "Sign Up" : "Login";
+
+  document.getElementById("authSwitch").textContent =
+    neslaSignupMode
+      ? "Already have an account? Login"
+      : "New here? Create account";
+
+  document.getElementById("authMessage").textContent = "";
+}
+
+async function neslaSubmit() {
+  const name = document.getElementById("authName").value.trim();
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  const message = document.getElementById("authMessage");
+  const button = document.getElementById("authSubmit");
+
+  if (!email || !password || (neslaSignupMode && !name)) {
+    message.textContent = "Please fill all required fields.";
+    return;
+  }
+
+  if (password.length < 6) {
+    message.textContent = "Password must be at least 6 characters.";
+    return;
+  }
+
+  button.disabled = true;
+  message.textContent = "Please wait...";
+
+  try {
+    if (neslaSignupMode) {
+      const result = await neslaAuth.createUserWithEmailAndPassword(
+        email, password
+      );
+      await result.user.updateProfile({displayName: name});
+    } else {
+      await neslaAuth.signInWithEmailAndPassword(email, password);
+    }
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function neslaLogoutUser() {
+  neslaAuth.signOut();
+}
+
+neslaAuth.onAuthStateChanged(user => {
+  document.getElementById("neslaAuth").style.display =
+    user ? "none" : "flex";
+
+  document.getElementById("neslaLogout").style.display =
+    user ? "block" : "none";
+});
+</script>
+<!-- END NESLA CONNECT FIREBASE LOGIN -->
 </body>
 </html>
